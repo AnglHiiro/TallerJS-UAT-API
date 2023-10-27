@@ -26,11 +26,11 @@ router.get(`/notes/:id`, async (req, res) => {
     try {
         if (req.params.id) {
             const data = JSON.parse(fs.readFileSync('notes.json', 'utf8'));
-            const notes = data.find(item => item.uuid == req.params.uuid);
+            const userNotes = data.find(item => item.uuid == req.params.uuid);
             res.status(200).json({
                 status: 200,
                 message: "Los resultados se han obtenido exitosamente",
-                body: [{notes: notes.notes}]
+                body: [{notes: userNotes.notes}]
             })
         } else {
             res.status(500).json({ message: "No envio el ID" });
@@ -49,6 +49,7 @@ router.post(`/notes/create`, async (req, res) => {
                 message: 'Todos los campos son requeridos'
             });
         } else {
+
             const id = uuid.v4()
             const data = JSON.parse(fs.readFileSync('notes.json', 'utf8'));
             const userNotes = data.find(item => item.id == req.body.uuid);
@@ -77,6 +78,7 @@ router.post(`/notes/edit`, async (req, res) => {
                 message: 'Todos los campos son requeridos'
             });
         } else {
+
             const data = JSON.parse(fs.readFileSync('notes.json', 'utf8'));
             const userNotes = data.find(item => item.id == req.body.uuid);
             const updatedNotes = userNotes.notes.filter(note => note.uuid != req.body.note.uuid)
@@ -105,6 +107,7 @@ router.post(`/notes/delete`, async (req, res) => {
                 message: 'Todos los campos son requeridos'
             });
         } else {
+            
             const data = JSON.parse(fs.readFileSync('notes.json', 'utf8'));
             const userNotes = data.find(item => item.id == req.body.uuid);
             const updatedNotes = userNotes.notes.filter(note => note.uuid != req.body.note.uuid)
